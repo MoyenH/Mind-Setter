@@ -1,32 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-brand-primary: #4F46E5;
-  --color-brand-secondary: #10B981;
+  --color-paper-bg: #FAF9F6;
+  --color-paper-text: #1C1C1C;
+  --color-accent-red: #B91C1C;
 }
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased;
+    @apply bg-paper-bg text-paper-text font-sans antialiased;
   }
 }
 
-.decision-card {
-  @apply bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200;
-}
-
-.pro-item {
-  @apply flex items-start gap-3 p-3 border-l-4 border-emerald-500 bg-emerald-50/50 rounded-r-lg;
-}
-
-.con-item {
-  @apply flex items-start gap-3 p-3 border-l-4 border-rose-500 bg-rose-50/50 rounded-r-lg;
+.editorial-border {
+  @apply border-t-2 border-paper-text pt-4;
 }
 
 .impact-badge {
-  @apply font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full;
+  @apply font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-full border border-current;
 }

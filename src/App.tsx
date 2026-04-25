@@ -45,51 +45,50 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 pb-20">
+    <div className="min-h-screen bg-paper-bg text-paper-text selection:bg-red-100 selection:text-red-900 pb-20">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-bottom border-slate-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-paper-bg/80 backdrop-blur-md border-b border-paper-text">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-indigo-600">
-            <Brain className="w-6 h-6" />
+          <div className="flex items-center gap-2 font-serif italic text-2xl tracking-tight">
             <span>Mind Setter</span>
           </div>
-          <p className="hidden sm:block text-xs font-mono text-slate-500 uppercase tracking-widest">
-            Decision Intelligence v1.0
+          <p className="hidden sm:block text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">
+            Issue No. 042 — Decision Matrix
           </p>
         </div>
       </header>
 
       <main className="pt-32 px-4 max-w-5xl mx-auto">
         {/* Input Section */}
-        <div className="max-w-2xl mx-auto mb-12 text-center">
+        <div className="max-w-2xl mx-auto mb-20 text-left">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">
-              Settle your mind, <span className="text-indigo-600">choose wisely.</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-accent-red block mb-2">The Inquiry Engine</span>
+            <h1 className="text-5xl sm:text-6xl font-serif font-bold mb-6 tracking-tight leading-[1.1]">
+              Refining the path to an <span className="italic">informed</span> choice.
             </h1>
-            <p className="text-slate-500 text-lg mb-8">
-              Input any decision or comparison. Our AI breaks it down into weighted facts, helping you see the logic behind your choice.
+            <p className="text-paper-text/60 text-lg mb-10 font-medium leading-relaxed max-w-lg">
+              Deconstruct complex variables through weighted analysis. Enter your query to begin the evaluation.
             </p>
 
-            <form onSubmit={handleAnalyze} className="relative group">
+            <form onSubmit={handleAnalyze} className="relative group border-b-2 border-paper-text pb-4">
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ex: Should I buy a Tesla or a BMW? / Should I quit my job?"
-                className="w-full px-6 py-4 rounded-2xl bg-white border border-slate-200 shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all placeholder:text-slate-400 pr-32"
+                placeholder="Current decision..."
+                className="w-full px-0 py-2 rounded-none bg-transparent font-serif italic text-2xl focus:outline-none placeholder:text-paper-text/20 pr-32"
                 disabled={isAnalyzing}
               />
               <button
                 type="submit"
                 disabled={isAnalyzing || !query.trim()}
-                className="absolute right-2 top-2 bottom-2 px-6 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                className="absolute right-0 bottom-4 px-8 py-3 bg-paper-text text-paper-bg font-serif italic text-lg hover:bg-black/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               >
                 {isAnalyzing ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Analyze'}
-                {!isAnalyzing && <ArrowRight className="w-4 h-4" />}
               </button>
             </form>
           </motion.div>
@@ -128,37 +127,39 @@ export default function App() {
             className="space-y-8"
           >
             {/* Summary Header */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-              <div className="flex items-center gap-2 text-indigo-600 font-semibold mb-4 uppercase tracking-widest text-xs">
-                <Sparkles className="w-4 h-4" />
-                Executive Summary
-              </div>
-              <h2 className="text-2xl font-bold mb-4">{result.summary}</h2>
-              <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100">
-                <Info className="w-5 h-5 text-indigo-500 mt-0.5 shrink-0" />
-                <p className="text-slate-600 italic">"{result.analyticalNote}"</p>
+            <div className="bg-transparent editorial-border mb-12">
+              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-accent-red block mb-2">Executive Summary</span>
+              <h2 className="text-4xl font-serif font-bold mb-6 leading-tight max-w-3xl">{result.summary}</h2>
+              <div className="max-w-xl">
+                 <p className="text-sm font-medium opacity-50 italic leading-relaxed">"{result.analyticalNote}"</p>
               </div>
             </div>
 
             {/* Comparison Grid */}
-            <div className={`grid gap-6 ${result.options.length > 1 ? 'md:grid-cols-2' : ''}`}>
+            <div className={`grid gap-12 ${result.options.length > 1 ? 'md:grid-cols-2' : ''}`}>
               {result.options.map((option, idx) => (
                 <OptionCard key={idx} option={option} />
               ))}
             </div>
 
             {/* Recommendation */}
-            <div className="bg-indigo-600 text-white rounded-2xl p-8 shadow-xl shadow-indigo-100 relative overflow-hidden">
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-4">
-                  <Scale className="w-6 h-6" />
-                  <span className="font-bold text-xl">The Recommendation</span>
-                </div>
-                <p className="text-indigo-50 text-xl leading-relaxed">
+            <div className="mt-20 pt-12 editorial-border border-b border-paper-text pb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+              <div className="max-w-xl">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold opacity-40 block mb-2">Final Verdict</span>
+                <p className="text-3xl font-serif italic leading-[1.3]">
                   {result.recommendation}
                 </p>
               </div>
-              <Sparkles className="absolute -right-10 -bottom-10 w-64 h-64 text-indigo-500/20" />
+              <div className="flex gap-12 shrink-0">
+                <div>
+                  <div className="text-[9px] uppercase font-bold opacity-40 mb-1">Analytic Depth</div>
+                  <div className="text-xs font-semibold uppercase">High Fidelity</div>
+                </div>
+                <div>
+                  <div className="text-[9px] uppercase font-bold opacity-40 mb-1">Status</div>
+                  <div className="text-xs font-semibold uppercase">Evaluated</div>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
@@ -180,66 +181,58 @@ export default function App() {
 
 const OptionCard = ({ option }: { option: DecisionOption; key?: any }) => {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col h-full">
-      <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-        <h3 className="text-xl font-bold text-slate-800">{option.name}</h3>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Strength</span>
-          <div className="w-12 h-12 rounded-full border-4 border-indigo-100 flex items-center justify-center relative">
-             <span className="font-mono font-bold text-indigo-600 text-sm">{option.overallScore}</span>
-          </div>
+    <div className="flex flex-col h-full bg-transparent">
+      <div className="editorial-border mb-8 flex items-baseline justify-between">
+        <h3 className="text-2xl font-serif font-bold uppercase tracking-tight">{option.name}</h3>
+        <div className="flex flex-col items-end">
+          <span className="text-[24px] font-serif italic text-accent-red">{option.overallScore}</span>
+          <span className="text-[8px] uppercase tracking-widest font-bold opacity-40">Weighting Index</span>
         </div>
       </div>
       
-      <div className="p-6 space-y-6 flex-1">
+      <div className="space-y-12 flex-1">
         {/* Pros */}
-        <div>
-          <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm uppercase tracking-wider mb-4">
-            <PlusCircle className="w-4 h-4" />
-            Critical Advantages
+        <section>
+          <div className="flex items-center justify-between border-b border-paper-text/10 pb-2 mb-6">
+            <span className="text-xs uppercase tracking-tighter font-black">Arguments For</span>
+            <span className="italic font-serif text-[10px] opacity-40">Pro Component</span>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-8 italic font-serif">
             {option.pros.map((pro, i) => (
-              <ImpactItemView key={i} item={pro} type="pro" />
+              <ImpactItemView key={i} item={pro} type="pro" index={i + 1} />
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Cons */}
-        <div>
-          <div className="flex items-center gap-2 text-rose-600 font-bold text-sm uppercase tracking-wider mb-4">
-            <MinusCircle className="w-4 h-4" />
-            Significant Drawbacks
+        <section>
+          <div className="flex items-center justify-between border-b border-paper-text/10 pb-2 mb-6">
+            <span className="text-xs uppercase tracking-tighter font-black">Arguments Against</span>
+            <span className="italic font-serif text-[10px] opacity-40">Con Component</span>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-8 italic font-serif">
             {option.cons.map((con, i) => (
-              <ImpactItemView key={i} item={con} type="con" />
+              <ImpactItemView key={i} item={con} type="con" index={i + 1} />
             ))}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
 };
 
-const ImpactItemView = ({ item, type }: { item: ImpactItem; type: 'pro' | 'con'; key?: any }) => {
-  const scoreColors = {
-    pro: 'bg-emerald-100 text-emerald-700',
-    con: 'bg-rose-100 text-rose-700',
-  };
-
+const ImpactItemView = ({ item, type, index }: { item: ImpactItem; type: 'pro' | 'con'; key?: any; index: number }) => {
   return (
-    <div className={`p-4 rounded-xl border border-slate-100 transition-all hover:border-slate-200 bg-white ${type === 'pro' ? 'border-l-4 border-l-emerald-500' : 'border-l-4 border-l-rose-500'}`}>
-      <div className="flex items-start justify-between gap-4 mb-2">
-        <p className="text-slate-700 font-medium leading-snug">{item.text}</p>
-        <span className={`shrink-0 font-mono text-xs px-2 py-0.5 rounded-full ${scoreColors[type]}`}>
-          {item.score}/5
+    <div className="group rounded-none bg-transparent">
+      <div className="text-[9px] font-mono font-bold opacity-30 mb-1 flex items-center justify-between">
+        <span>{String(index).padStart(2, '0')} / {item.category.toUpperCase()}</span>
+        <span className={type === 'pro' ? 'text-emerald-700' : 'text-rose-700'}>
+          {item.score} UNIT IMPACT
         </span>
       </div>
-      <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-        <ChevronRight className="w-3 h-3" />
-        {item.category}
-      </div>
+      <p className="text-lg leading-snug">
+        {item.text}
+      </p>
     </div>
   );
 };
