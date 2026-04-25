@@ -13,12 +13,12 @@
 
 @layer base {
   body {
-    @apply bg-paper-bg text-paper-text font-sans antialiased;
+    @apply bg-paper-bg text-paper-text font-sans antialiased text-[17px] leading-relaxed;
   }
 }
 
 .editorial-border {
-  @apply border-t-2 border-paper-text pt-4;
+  @apply border-t border-paper-text/20 pt-6;
 }
 
 .impact-badge {

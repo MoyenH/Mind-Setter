@@ -182,12 +182,30 @@ export default function App() {
 const OptionCard = ({ option }: { option: DecisionOption; key?: any }) => {
   return (
     <div className="flex flex-col h-full bg-transparent">
-      <div className="editorial-border mb-8 flex items-baseline justify-between">
-        <h3 className="text-2xl font-serif font-bold uppercase tracking-tight">{option.name}</h3>
-        <div className="flex flex-col items-end">
-          <span className="text-[24px] font-serif italic text-accent-red">{option.overallScore}</span>
-          <span className="text-[8px] uppercase tracking-widest font-bold opacity-40">Weighting Index</span>
+      <div className="editorial-border mb-8 flex flex-col gap-4">
+        <div className="flex items-baseline justify-between">
+          <h3 className="text-2xl font-serif font-bold uppercase tracking-tight">{option.name}</h3>
+          <div className="flex flex-col items-end">
+            <span className="text-[24px] font-serif italic text-accent-red">{option.overallScore}</span>
+            <span className="text-[8px] uppercase tracking-widest font-bold opacity-40">Weighting Index</span>
+          </div>
         </div>
+        
+        {/* Product Image Context */}
+        {option.imagePrompt && (
+          <div className="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 border border-paper-text/5 group relative">
+            <img 
+              src={`https://picsum.photos/seed/${encodeURIComponent(option.name)}/1200/675`}
+              alt={option.name}
+              className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute bottom-4 left-4 right-4 p-3 bg-paper-bg/90 backdrop-blur-sm border border-paper-text/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+              <p className="text-[10px] font-mono uppercase tracking-widest leading-none text-paper-text/60">Visual Reference</p>
+              <p className="text-xs font-semibold">{option.name}</p>
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="space-y-12 flex-1">
@@ -197,7 +215,7 @@ const OptionCard = ({ option }: { option: DecisionOption; key?: any }) => {
             <span className="text-xs uppercase tracking-tighter font-black">Arguments For</span>
             <span className="italic font-serif text-[10px] opacity-40">Pro Component</span>
           </div>
-          <div className="space-y-8 italic font-serif">
+          <div className="space-y-8">
             {option.pros.map((pro, i) => (
               <ImpactItemView key={i} item={pro} type="pro" index={i + 1} />
             ))}
@@ -210,7 +228,7 @@ const OptionCard = ({ option }: { option: DecisionOption; key?: any }) => {
             <span className="text-xs uppercase tracking-tighter font-black">Arguments Against</span>
             <span className="italic font-serif text-[10px] opacity-40">Con Component</span>
           </div>
-          <div className="space-y-8 italic font-serif">
+          <div className="space-y-8">
             {option.cons.map((con, i) => (
               <ImpactItemView key={i} item={con} type="con" index={i + 1} />
             ))}
@@ -224,13 +242,24 @@ const OptionCard = ({ option }: { option: DecisionOption; key?: any }) => {
 const ImpactItemView = ({ item, type, index }: { item: ImpactItem; type: 'pro' | 'con'; key?: any; index: number }) => {
   return (
     <div className="group rounded-none bg-transparent">
-      <div className="text-[9px] font-mono font-bold opacity-30 mb-1 flex items-center justify-between">
-        <span>{String(index).padStart(2, '0')} / {item.category.toUpperCase()}</span>
-        <span className={type === 'pro' ? 'text-emerald-700' : 'text-rose-700'}>
-          {item.score} UNIT IMPACT
+      <div className="text-[9px] font-mono font-bold opacity-30 mb-2 flex items-center justify-between">
+        <span className="uppercase tracking-widest">{String(index).padStart(2, '0')} / {item.category}</span>
+        <span className={type === 'pro' ? 'text-emerald-700 font-bold' : 'text-rose-700 font-bold'}>
+          {item.score} / 5 IMPACT
         </span>
       </div>
-      <p className="text-lg leading-snug">
+      
+      {/* Visual Bar Graph */}
+      <div className="mb-3 h-1 w-full bg-paper-text/5 rounded-full overflow-hidden">
+        <motion.div 
+          initial={{ width: 0 }}
+          animate={{ width: `${(item.score / 5) * 100}%` }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+          className={`h-full ${type === 'pro' ? 'bg-emerald-500' : 'bg-rose-500'}`}
+        />
+      </div>
+
+      <p className="text-lg leading-snug font-medium text-paper-text/90">
         {item.text}
       </p>
     </div>

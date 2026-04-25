@@ -13,6 +13,7 @@ export interface DecisionOption {
   pros: ImpactItem[];
   cons: ImpactItem[];
   overallScore: number;
+  imagePrompt?: string; // Descriptive prompt for a representative image
 }
 
 export interface DecisionAnalysis {
@@ -31,7 +32,9 @@ export async function analyzeDecision(query: string): Promise<DecisionAnalysis> 
     If it's a single decision (e.g. "Should I quit my job?"), treat "Stay/Wait" as one option and "Quit/Act" as the other.
     If it's a direct comparison (e.g. "Tesla vs BMW"), analyze both as options.
     Assign a score from 1 to 5 for each pro/con based on its likely impact on the person's life/situation.
-    Sort the pros and cons by impact score (highest first).`,
+    Sort the pros and cons by impact score (highest first).
+    
+    For each option, provide an 'imagePrompt' which is a 5-8 word descriptive prompt for a professional, clean image of the subject (e.g. 'A sleek modern electric car on a white background' for Tesla).`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -66,9 +69,10 @@ export async function analyzeDecision(query: string): Promise<DecisionAnalysis> 
                     }
                   }
                 },
-                overallScore: { type: Type.NUMBER, description: "Calculated balance score for this option (0-100)." }
+                overallScore: { type: Type.NUMBER, description: "Calculated balance score for this option (0-100)." },
+                imagePrompt: { type: Type.STRING, description: "Descriptive image prompt." }
               },
-              required: ["name", "pros", "cons", "overallScore"]
+              required: ["name", "pros", "cons", "overallScore", "imagePrompt"]
             }
           },
           recommendation: { type: Type.STRING, description: "Clear advice or reasoning for the preferred path." },
